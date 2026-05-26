@@ -1,5 +1,7 @@
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "@/public/assets/css/style.css";
+import { NavProvider } from "@/lib/nav-context";
+import { listNavProducts } from "@/lib/ota";
 import type { Metadata } from "next";
 import { Manrope, Merienda } from "next/font/google";
 
@@ -21,14 +23,20 @@ export const metadata: Metadata = {
     description: "Multipurpose Travel Booking Next.js Template",
 };
 
-export default function RootLayout({
+export const revalidate = 60;
+
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const navItems = await listNavProducts();
+
     return (
         <html lang="en" className={`${manrope_init.variable} ${merienda_init.variable}`}>
-            <body>{children}</body>
+            <body>
+                <NavProvider items={navItems}>{children}</NavProvider>
+            </body>
         </html>
     );
 }

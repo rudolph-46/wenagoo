@@ -1,15 +1,42 @@
 'use client'
 import CurrencyDropdown from '@/components/elements/CurrencyDropdown'
 import LanguageDropdown from '@/components/elements/LanguageDropdown'
+import { hrefForCode, useNavItems } from '@/lib/nav-context'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 const ThemeSwitch = dynamic(() => import('@/components/elements/ThemeSwitch'), {
 	ssr: false,
 })
+
+const DEFAULT_NAV = [
+	{ code: "home", label: "Home" },
+	{ code: "tours", label: "Tours" },
+	{ code: "destinations", label: "Destinations" },
+	{ code: "activities", label: "Activities" },
+	{ code: "hotel", label: "Hotel" },
+	{ code: "apartment", label: "Apartment" },
+	{ code: "car-rental", label: "Car rental" },
+	{ code: "transport", label: "Transport" },
+]
+
 export default function Header1({ scroll, handleLogin, handleMobileMenu, handleRegister, handleSidebar }: any) {
+	const navItems = useNavItems()
+	const items = navItems && navItems.length > 0 ? navItems : DEFAULT_NAV
 	return (
 		<>
 			<header className={`header sticky-bar ${scroll ? "stick" : ""}`}>
+				<div className="top-bar">
+					<div className="container-fluid">
+						<div className="text-header">
+							<div className="text-unlock text-sm-bold">Unlock the Magic of Travel with Wenagoo - Your Gateway to Extraordinary Experiences</div>
+							<Link className="link-secondary-2" href="#">Get This Now
+								<svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16">
+									<path d="M7.99992 12.6666L12.6666 7.99992L7.99992 3.33325M12.6666 7.99992L3.33325 7.99992" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+								</svg>
+							</Link>
+						</div>
+					</div>
+				</div>
 				<div className="container-fluid background-body">
 					<div className="main-header">
 						<div className="header-left">
@@ -20,16 +47,16 @@ export default function Header1({ scroll, handleLogin, handleMobileMenu, handleR
 							</div>
 							<div className="header-nav">
 								<nav className="nav-main-menu">
-									<ul className="main-menu">
-										<li><Link className="active" href="/">Home</Link></li>
-										<li><Link href="/tour-grid">Tours</Link></li>
-										<li><Link href="/destination">Destinations</Link></li>
-										<li><Link href="/activities">Activities</Link></li>
-										<li><Link href="/hotel-grid">Hotel</Link></li>
-										<li><Link href="/rental-property">Apartment</Link></li>
-										<li><Link href="/rental-car">Car rental</Link></li>
-										<li><Link href="/tickets">Transport</Link></li>
-									</ul>
+								<ul className="main-menu">
+									{items.map((it, i) => (
+										<li key={it.code}>
+											<Link className={i === 0 ? "active" : ""} href={hrefForCode(it.code)}>
+												{it.label}
+											</Link>
+										</li>
+									))}
+									<li><Link href="/contact">Contact</Link></li>
+								</ul>
 								</nav>
 							</div>
 						</div>

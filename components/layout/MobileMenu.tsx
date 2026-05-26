@@ -1,9 +1,23 @@
 'use client'
+import { hrefForCode, useNavItems } from '@/lib/nav-context'
 import Link from 'next/link'
 import { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
+const DEFAULT_NAV = [
+	{ code: "home", label: "Home" },
+	{ code: "tours", label: "Tours" },
+	{ code: "destinations", label: "Destinations" },
+	{ code: "activities", label: "Activities" },
+	{ code: "hotel", label: "Hotel" },
+	{ code: "apartment", label: "Apartment" },
+	{ code: "car-rental", label: "Car rental" },
+	{ code: "transport", label: "Transport" },
+]
+
 export default function MobileMenu({ isMobileMenu, handleMobileMenu }: any) {
+	const navItems = useNavItems()
+	const items = navItems && navItems.length > 0 ? navItems : DEFAULT_NAV
 	const [isAccordion, setIsAccordion] = useState(0)
 
 	const handleAccordion = (key: any) => {
@@ -32,14 +46,10 @@ export default function MobileMenu({ isMobileMenu, handleMobileMenu }: any) {
 							<div className="mobile-menu-wrap mobile-header-border">
 								<nav>
 								<ul className="mobile-menu font-heading">
-									<li><Link href="/">Home</Link></li>
-									<li><Link href="/tour-grid">Tours</Link></li>
-									<li><Link href="/destination">Destinations</Link></li>
-									<li><Link href="/activities">Activities</Link></li>
-									<li><Link href="/hotel-grid">Hotel</Link></li>
-									<li><Link href="/rental-property">Apartment</Link></li>
-									<li><Link href="/rental-car">Car rental</Link></li>
-									<li><Link href="/tickets">Transport</Link></li>
+									{items.map((it) => (
+										<li key={it.code}><Link href={hrefForCode(it.code)}>{it.label}</Link></li>
+									))}
+									<li><Link href="/contact">Contact</Link></li>
 								</ul>
 								</nav>
 							</div>

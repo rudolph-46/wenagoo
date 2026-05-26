@@ -50,13 +50,13 @@ export default function Layout({ headerStyle, footerStyle, breadcrumbTitle, chil
 	const handleRegister = (): void => setRegister(!isRegister)
 
 	useEffect(() => {
-		const WOW: any = require('wowjs');
-		(window as any).wow = new WOW.WOW({
-			live: false
-		});
-
-		// Initialize WOW.js
-		(window as any).wow.init()
+		// Animations disabled — force all .wow elements to their final state
+		document.querySelectorAll<HTMLElement>('.wow').forEach((el) => {
+			el.style.visibility = 'visible'
+			el.style.animationName = 'none'
+			el.style.animationDuration = '0s'
+			el.style.opacity = '1'
+		})
 
 		const handleScroll = (): void => {
 			const scrollCheck: boolean = window.scrollY > 100
