@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Dropdown from 'react-bootstrap/Dropdown'
 
 type City = { slug: string; name: string }
@@ -35,16 +35,15 @@ export default function SearchFilterBottom({
 	initialChildren = 0,
 }: Props) {
 	const router = useRouter()
-	const sp = useSearchParams()
 
 	const todayISO = toISO(new Date())
 	const tomorrowISO = toISO(new Date(Date.now() + 24 * 60 * 60 * 1000))
 
-	const [city, setCity] = useState<string | null>(initialCity ?? sp.get('city'))
-	const [checkIn, setCheckIn] = useState<string>(initialCheckIn ?? sp.get('checkIn') ?? todayISO)
-	const [checkOut, setCheckOut] = useState<string>(initialCheckOut ?? sp.get('checkOut') ?? tomorrowISO)
-	const [adults, setAdults] = useState<number>(initialAdults ?? Number(sp.get('adults') ?? 2))
-	const [childrenCount, setChildrenCount] = useState<number>(initialChildren ?? Number(sp.get('children') ?? 0))
+	const [city, setCity] = useState<string | null>(initialCity ?? null)
+	const [checkIn, setCheckIn] = useState<string>(initialCheckIn ?? todayISO)
+	const [checkOut, setCheckOut] = useState<string>(initialCheckOut ?? tomorrowISO)
+	const [adults, setAdults] = useState<number>(initialAdults ?? 2)
+	const [childrenCount, setChildrenCount] = useState<number>(initialChildren ?? 0)
 
 	// Auto-fix checkOut when checkIn moves past it
 	useEffect(() => {
