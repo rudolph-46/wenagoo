@@ -1,6 +1,7 @@
 import { anyApi } from "convex/server"
 import { unstable_cache } from "next/cache"
 import { getConvexClient } from "./convex"
+import type { Rail } from "./rails"
 import { slugify } from "./slug"
 
 // In dev mode every cached query is bypassed (revalidate: 1) so CMS edits
@@ -61,6 +62,7 @@ export type OtaPageContent = {
 	}
 	footer: OtaFooter
 	paymentMethods: OtaPaymentMethod[]
+	rails?: Rail[]
 	updatedAt: number
 }
 

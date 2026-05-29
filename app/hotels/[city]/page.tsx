@@ -9,6 +9,7 @@ import {
 	mergeCanalHotels,
 	mergeRoomTypes,
 } from "@/lib/ota"
+import { resolveRail } from "@/lib/rails"
 import { slugify } from "@/lib/slug"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -45,8 +46,7 @@ export default async function HotelsCityPage({ params, searchParams }: PageParam
 	if (!cityContent) notFound()
 
 	const cityNameNormalized = slugify(cityContent.name)
-	const allCanalHotels = mergeCanalHotels(structure, pricing)
-	const hotels = allCanalHotels.filter((h) => slugify(h.city) === cityNameNormalized)
+	const hotels = mergeCanalHotels(structure, pricing).filter((h) => slugify(h.city) === cityNameNormalized)
 
 	// Detect search mode (both dates required)
 	const isSearchMode = !!(sp.checkIn && sp.checkOut)
@@ -85,66 +85,24 @@ export default async function HotelsCityPage({ params, searchParams }: PageParam
 		)
 	}
 
-	// Auto-rails (computed from hotel data) — prepended to CMS-curated collections.
-	// Each rail must show at least MIN_PER_RAIL hotels: we pad with the city's
-	// top-rated hotels that aren't already in the rail.
-	const NOW = Date.now()
-	const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000
-	const MIN_PER_RAIL = 5
-	const normalize = (s?: string) => (s ?? "").toLowerCase()
-	const cityRanked = [...hotels].sort((a, b) => {
-		if (a.featured !== b.featured) return a.featured ? -1 : 1
-		return b.avgRating - a.avgRating
-	})
-	const padTo = (matches: typeof hotels, min: number): typeof hotels => {
-		if (matches.length >= min) return matches
-		const ids = new Set(matches.map((h) => h.hotelId))
-		const padding = cityRanked.filter((h) => !ids.has(h.hotelId)).slice(0, min - matches.length)
-		return [...matches, ...padding]
-	}
-	const autoCollections = [
-		{
-			id: "auto-akwa",
-			title: "Akwa et alentours",
-			subtitle: "Cœur commerçant de Douala — restaurants, boutiques, ambiance",
-			icon: "🏬",
-			hotels: padTo(hotels.filter((h) => normalize(h.street).includes("akwa")), MIN_PER_RAIL),
-		},
-		{
-			id: "auto-bonanjo",
-			title: "Bonanjo et le quartier d'affaires",
-			subtitle: "Le QG des voyageurs business — accès rapide CBD et ports",
-			icon: "🏢",
-			hotels: padTo(hotels.filter((h) => normalize(h.street).includes("bonanjo") || normalize(h.street).includes("bonandjo")), MIN_PER_RAIL),
-		},
-		{
-			id: "auto-couple",
-			title: "Pour un week-end en couple",
-			subtitle: "Adresses romantiques sélectionnées par notre équipe",
-			icon: "💑",
-			hotels: padTo(cityRanked.slice(0, MIN_PER_RAIL + 1), MIN_PER_RAIL),
-		},
-		{
-			id: "auto-pool",
-			title: "Avec piscine",
-			subtitle: "Plongez après une journée bien remplie",
-			icon: "🏊",
-			hotels: padTo(hotels.filter((h) => h.hasPool), MIN_PER_RAIL),
-		},
-		{
-			id: "auto-new",
-			title: "Nouveautés sur Wenagoo",
-			subtitle: "Hôtels arrivés ces 30 derniers jours",
-			icon: "✨",
-			hotels: padTo(hotels.filter((h) => h.createdAt && NOW - h.createdAt <= THIRTY_DAYS), MIN_PER_RAIL),
-		},
-	]
-		// Drop rails only if there isn't even enough city inventory to reach the minimum
-		.filter((c) => c.hotels.length >= MIN_PER_RAIL || c.hotels.length === hotels.length)
-		.map((c) => ({ ...c, subtitle: c.subtitle ?? null, icon: c.icon ?? null }))
+	// 1) Rails dynamiques — template global appliqué aux hôtels de cette ville
+	//    (édités dans Honelia admin, scope = "city")
+	const templateRails = (cms.rails ?? [])
+		.filter((r) => r.scope === "city" && r.isPublished)
+		.sort((a, b) => a.position - b.position)
+		.map((rail) => ({
+			id: rail.id,
+			title: rail.title,
+			subtitle: rail.subtitle ?? null,
+			icon: rail.icon ?? null,
+			hotels: resolveRail(rail, hotels),
+		}))
+		.filter((c) => c.hotels.length >= 5 || c.hotels.length === hotels.length)
 
-	// Editorial rails curated by superadmin (from cityContent.collections) come after the auto ones.
-	const mergedCollections = [...autoCollections, ...(cityContent.collections ?? [])]
+	// 2) Collections éditoriales propres à la ville (mode manuel, déjà résolues côté Convex)
+	const editorialCollections = cityContent.collections ?? []
+
+	const mergedCollections = [...templateRails, ...editorialCollections]
 
 	return (
 		<HotelsClient
