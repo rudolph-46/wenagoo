@@ -4,6 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { swiperGroup1, swiperGroupAnimate } from "@/util/swiperOption";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 export default function BlogDetail2() {
     return (
         <>

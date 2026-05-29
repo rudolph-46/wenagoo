@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import Layout from "@/components/layout/Layout"
 import Link from "next/link"
 import CategoryFilter from '@/components/elements/CategoryFilter'
+
 export default function Destination5() {
 
     return (

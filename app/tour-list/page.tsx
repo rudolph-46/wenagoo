@@ -13,6 +13,7 @@ import Layout from "@/components/layout/Layout"
 import rawToursData from "@/util/tours.json"
 import useTourFilter from '@/util/useTourFilter'
 import Link from "next/link"
+
 const toursData = rawToursData.map(tour => ({
 	...tour,
 	duration: parseFloat(tour.duration as string),

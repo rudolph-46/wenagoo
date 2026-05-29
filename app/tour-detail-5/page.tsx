@@ -6,6 +6,7 @@ import { swiperCenterSlider } from "@/util/swiperOption";
 import Link from "next/link";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 export default function TourDetail5() {
     const [isAccordion, setIsAccordion] = useState(null);
 

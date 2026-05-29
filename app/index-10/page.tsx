@@ -15,6 +15,7 @@ import SlideBanner1 from '@/components/sections/SlideBanner1'
 import SlideBanner2 from "@/components/sections/SlideBanner2"
 import Testimonials7 from "@/components/sections/Testimonials7"
 import WhyBookWenago4 from "@/components/sections/WhyBookWenago4"
+
 export default function Home10() {
 
     return (

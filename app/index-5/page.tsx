@@ -13,6 +13,7 @@ import PopularDestinations5 from "@/components/sections/PopularDestinations5"
 import Subscriber2 from "@/components/sections/Subscriber2"
 import Testimonials4 from "@/components/sections/Testimonials4"
 import WhyBookWenago1 from "@/components/sections/WhyBookWenago1"
+
 export default function Home5() {
 
     return (

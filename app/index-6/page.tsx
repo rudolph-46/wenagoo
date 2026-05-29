@@ -11,6 +11,7 @@ import TopCategory2 from "@/components/sections/TopCategory2"
 import TopSearchSection from "@/components/sections/TopSearchSection"
 import TrendingDestination from "@/components/sections/TrendingDestination"
 import WhyBookWenago2 from "@/components/sections/WhyBookWenago2"
+
 export default function Home6() {
 
     return (

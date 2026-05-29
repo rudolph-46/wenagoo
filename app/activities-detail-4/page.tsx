@@ -5,6 +5,7 @@ import VideoPopup from "@/components/elements/VideoPopup";
 import Layout from "@/components/layout/Layout";
 import SwiperGroup3Slider from "@/components/slider/SwiperGroup3Slider";
 import Link from "next/link";
+
 export default function ActivitiesDetail4() {
     const [isAccordion, setIsAccordion] = useState(null);
 

@@ -4,6 +4,7 @@ import { swiperGroupAnimate } from "@/util/swiperOption"
 import Layout from "@/components/layout/Layout"
 import Link from "next/link"
 import CategoryFilter from '@/components/elements/CategoryFilter'
+
 export default function Destination4() {
 
     return (

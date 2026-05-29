@@ -3,6 +3,7 @@ import { swiperGroupTestimonials1 } from "@/util/swiperOption"
 import { Swiper, SwiperSlide } from "swiper/react"
 import Layout from "@/components/layout/Layout"
 import Link from "next/link"
+
 export default function Contact() {
 
     return (

@@ -15,6 +15,7 @@ import useTourFilter from '@/util/useTourFilter'
 import Link from "next/link"
 
 
+
 const toursData = rawToursData.map(tour => ({
 	...tour,
 	duration: parseFloat(tour.duration as string),

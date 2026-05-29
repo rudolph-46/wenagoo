@@ -3,8 +3,9 @@ import Countdown from '@/components/elements/Countdown'
 import VideoPopup from '@/components/elements/VideoPopup'
 import Layout from "@/components/layout/Layout"
 import Link from "next/link"
+const COUNTDOWN_TARGET = Date.UTC(2030, 0, 1)
+
 export default function CommingSoon() {
-	const currentTime = new Date()
 	return (
 		<>
 
@@ -19,7 +20,7 @@ export default function CommingSoon() {
 										<h1 className="mt-15 mb-15 neutral-1000 wow fadeInUp">Coming Soon</h1>
 										<div className="box-countdown-comming">
 											<div className="box-count box-count-square mb-0 mt-5 wow fadeInUp">
-												<Countdown endDateTime={currentTime.setDate(currentTime.getDate() + 2)} />
+												<Countdown endDateTime={COUNTDOWN_TARGET} />
 											</div>
 										</div>
 										<p className="text-xl-medium neutral-500 mt-55">Our design projects are fresh and simple and will benefit your business greatly. Learn more about our work!</p>

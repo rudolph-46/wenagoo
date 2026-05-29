@@ -81,7 +81,7 @@ export default function Footer2() {
                     <div className="footer-bottom">
                         <div className="row align-items-center">
                             <div className="col-md-6 text-md-start text-center mb-20">
-                                <p className="text-sm neutral-500">© {new Date().getFullYear()} Wenago Inc. All rights reserved.</p>
+                                <p className="text-sm neutral-500">© 2026 Wenago Inc. All rights reserved.</p>
                             </div>
                             <div className="col-md-6 text-md-end text-center mb-20">
                                 <ul className="menu-bottom-footer">

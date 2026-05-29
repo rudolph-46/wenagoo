@@ -3,63 +3,87 @@ import Link from 'next/link'
 import React from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 
-export default function CagegoryFilter2() {
+type FiltersLabels = {
+	price: string
+	type: string
+	amenities: string
+	roomStyle: string
+	reviewScore: string
+	location: string
+}
+
+const DEFAULT_LABELS: FiltersLabels = {
+	price: 'Prix',
+	type: "Type d'hôtel",
+	amenities: 'Équipements',
+	roomStyle: 'Style de chambre',
+	reviewScore: 'Note',
+	location: 'Localisation',
+}
+
+export default function CagegoryFilter2({ labels = DEFAULT_LABELS }: { labels?: FiltersLabels }) {
 	return (
 		<>
 			<div className="d-flex align-items-center justify-content-center popular-categories">
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownCategory" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Price range</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownCategory" style={{ margin: 0 }}>
-						<li><Link className="dropdown-item active" href="#">$10 - $100</Link></li>
-						<li><Link className="dropdown-item" href="#">$100 - $1.000</Link></li>
-						<li><Link className="dropdown-item" href="#">$1.000 - $10.000</Link></li>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>{labels.price}</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
+						<li><Link className="dropdown-item active" href="#">Moins de 25 000 XAF</Link></li>
+						<li><Link className="dropdown-item" href="#">25 000 – 75 000 XAF</Link></li>
+						<li><Link className="dropdown-item" href="#">75 000 – 150 000 XAF</Link></li>
+						<li><Link className="dropdown-item" href="#">Plus de 150 000 XAF</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownHotelType" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Hotel Type</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownHotelType" style={{ margin: 0 }}>
-						<li><Link className="dropdown-item active" href="#">Hotel Type</Link></li>
-						<li><Link className="dropdown-item" href="#">Hotel Type</Link></li>
-						<li><Link className="dropdown-item" href="#">Hotel Type</Link></li>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>{labels.type}</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
+						<li><Link className="dropdown-item active" href="#">Hôtel</Link></li>
+						<li><Link className="dropdown-item" href="#">Appart-hôtel</Link></li>
+						<li><Link className="dropdown-item" href="#">Résidence</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownCategory" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Categories</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownCategory" style={{ margin: 0 }}>
-						<li><Link className="dropdown-item active" href="#">Attractives</Link></li>
-						<li><Link className="dropdown-item" href="#">Active</Link></li>
-						<li><Link className="dropdown-item" href="#">Nature</Link></li>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>Catégories</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
+						<li><Link className="dropdown-item active" href="#">Affaires</Link></li>
+						<li><Link className="dropdown-item" href="#">Famille</Link></li>
+						<li><Link className="dropdown-item" href="#">Luxe</Link></li>
+						<li><Link className="dropdown-item" href="#">Plage</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownAmenities" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Amenities</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownAmenities" style={{ margin: 0 }}>
-						<li><Link className="dropdown-item active" href="#">Amenities</Link></li>
-						<li><Link className="dropdown-item" href="#">Active</Link></li>
-						<li><Link className="dropdown-item" href="#">Nature</Link></li>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>{labels.amenities}</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
+						<li><Link className="dropdown-item active" href="#">Wi-Fi gratuit</Link></li>
+						<li><Link className="dropdown-item" href="#">Piscine</Link></li>
+						<li><Link className="dropdown-item" href="#">Petit-déjeuner inclus</Link></li>
+						<li><Link className="dropdown-item" href="#">Parking</Link></li>
+						<li><Link className="dropdown-item" href="#">Climatisation</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownRoom" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Room Style</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownRoom" style={{ margin: 0 }}>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>{labels.roomStyle}</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
 						<li><Link className="dropdown-item active" href="#">Standard</Link></li>
-						<li><Link className="dropdown-item" href="#">Deluxe</Link></li>
-						<li><Link className="dropdown-item" href="#">Luxury</Link></li>
+						<li><Link className="dropdown-item" href="#">Supérieure</Link></li>
+						<li><Link className="dropdown-item" href="#">Suite</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownReview" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Review Score</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownReview" style={{ margin: 0 }}>
-						<li><Link className="dropdown-item active" href="#">5 stars</Link></li>
-						<li><Link className="dropdown-item" href="#">4 stars</Link></li>
-						<li><Link className="dropdown-item" href="#">3 stars</Link></li>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>{labels.reviewScore}</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
+						<li><Link className="dropdown-item active" href="#">9+ Exceptionnel</Link></li>
+						<li><Link className="dropdown-item" href="#">8+ Superbe</Link></li>
+						<li><Link className="dropdown-item" href="#">7+ Très bien</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Dropdown className="dropdown dropdown-filter">
-					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" id="dropdownLocation" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <span>Booking Location</span></Dropdown.Toggle>
-					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" aria-lablledby="dropdownLocation" style={{ margin: 0 }}>
-						<li><Link className="dropdown-item active" href="#">Vietnam</Link></li>
-						<li><Link className="dropdown-item" href="#">English</Link></li>
+					<Dropdown.Toggle className="btn btn-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span>{labels.location}</span></Dropdown.Toggle>
+					<Dropdown.Menu as="ul" className="dropdown-menu dropdown-menu-light" style={{ margin: 0 }}>
+						<li><Link className="dropdown-item active" href="#">Douala</Link></li>
+						<li><Link className="dropdown-item" href="#">Yaoundé</Link></li>
+						<li><Link className="dropdown-item" href="#">Kribi</Link></li>
+						<li><Link className="dropdown-item" href="#">Limbé</Link></li>
 					</Dropdown.Menu>
 				</Dropdown>
 			</div>

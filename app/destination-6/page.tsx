@@ -5,6 +5,7 @@ import SwiperGroupPayment7Slider from '@/components/slider/SwiperGroupPayment7Sl
 import { swiperGroupAnimate } from "@/util/swiperOption"
 import Link from "next/link"
 import { Swiper, SwiperSlide } from "swiper/react"
+
 export default function Destination6() {
 
 	return (

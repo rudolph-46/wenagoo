@@ -4,6 +4,7 @@ import BookingForm from "@/components/elements/BookingForm";
 import Layout from "@/components/layout/Layout";
 import SwiperGroup3Slider from "@/components/slider/SwiperGroup3Slider";
 import Link from "next/link";
+
 export default function TourDetail() {
     const [isAccordion, setIsAccordion] = useState(null);
 

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 
+
 const SlickArrowLeft = ({ currentSlide, slideCount, ...props }: any) => (
     <button {...props} className={"slick-prev slick-arrow" + (currentSlide === 0 ? " slick-disabled" : "")} type="button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">

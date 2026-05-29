@@ -4,8 +4,9 @@ import { swiperGroupAnimate } from "@/util/swiperOption"
 import Link from "next/link"
 import Countdown from '../elements/Countdown'
 
+const COUNTDOWN_TARGET = Date.UTC(2030, 0, 1)
+
 export default function YourJourney() {
-	const currentTime = new Date()
     return (
         <>
 
@@ -62,7 +63,7 @@ export default function YourJourney() {
                                                 <div className="endtime">
                                                     <p className="text-sm-bold neutral-600">Promotion will end in</p>
                                                     <div className="box-count box-count-square mb-0 mt-5 wow fadeInUp">
-													<Countdown endDateTime={currentTime.setDate(currentTime.getDate() + 2)} />
+													<Countdown endDateTime={COUNTDOWN_TARGET} />
                                                     </div>
                                                 </div>
                                             </div>

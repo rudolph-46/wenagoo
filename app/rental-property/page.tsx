@@ -12,6 +12,7 @@ import Layout from "@/components/layout/Layout"
 import SwiperGroup6Slider from "@/components/slider/SwiperGroup6Slider"
 import rawPropertiesData from "@/util/properties.json"
 import usePropertyFilter from '@/util/usePropertyFilter'
+
 const propertiesData = rawPropertiesData.map(property => ({
 	...property,
 	rating: parseFloat(property.rating as string)

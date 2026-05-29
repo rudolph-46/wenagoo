@@ -8,6 +8,7 @@ import Layout from "@/components/layout/Layout"
 import rawPropertiesData from "@/util/properties.json"
 import usePropertyFilter from '@/util/usePropertyFilter'
 import Link from 'next/link'
+
 const propertiesData = rawPropertiesData.map(property => ({
 	...property,
 	rating: parseFloat(property.rating as string)

@@ -4,6 +4,7 @@ import data from "@/util/blog.json"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
+
 interface Post {
     id: number
     title: string

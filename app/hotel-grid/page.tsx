@@ -1,12 +1,12 @@
-import { getOtaPage, listCanalHotels } from "@/lib/ota"
-import HotelGridClient from "./HotelGridClient"
+import { slugify } from "@/lib/slug"
+import { redirect } from "next/navigation"
 
-export const revalidate = 60
+type SearchParams = Promise<{ city?: string }>
 
-export default async function HotelGridPage() {
-	const [cms, hotels] = await Promise.all([
-		getOtaPage("hotel-grid"),
-		listCanalHotels(),
-	])
-	return <HotelGridClient cms={cms} hotels={hotels} />
+export default async function HotelGridLegacyPage({ searchParams }: { searchParams: SearchParams }) {
+	const { city } = await searchParams
+	if (city) {
+		redirect(`/hotels/${slugify(decodeURIComponent(city))}`)
+	}
+	redirect("/hotels")
 }

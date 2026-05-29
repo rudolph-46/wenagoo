@@ -14,6 +14,7 @@ import rawticketsData from "@/util/tickets.json"
 import useTicketFilter from '@/util/useTicketFilter'
 import Link from "next/link"
 import React from 'react'
+
 const ticketsData = rawticketsData.map(ticket => ({
 	...ticket,
 	rating: parseFloat(ticket.rating as string)

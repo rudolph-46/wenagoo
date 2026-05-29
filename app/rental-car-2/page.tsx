@@ -9,6 +9,7 @@ import Layout from "@/components/layout/Layout"
 import rawCarsData from "@/util/cars.json"
 import useCarFilter from '@/util/useCarFilter'
 import Link from "next/link"
+
 const carsData = rawCarsData.map(car => ({
 	...car,
 	rating: parseFloat(car.rating as string)

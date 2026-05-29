@@ -11,6 +11,7 @@ import PopularDestinations4 from "@/components/sections/PopularDestinations4"
 import PopularSpots from "@/components/sections/PopularSpots"
 import SlideBanner1 from "@/components/sections/SlideBanner1"
 import Testimonials3 from "@/components/sections/Testimonials3"
+
 export default function Home4() {
 
     return (

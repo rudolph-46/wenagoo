@@ -9,6 +9,7 @@ import SwiperGroup8Slider from '@/components/slider/SwiperGroup8Slider'
 import rawHotelsData from "@/util/hotels.json"
 import useHotelFilter from '@/util/useHotelFilter'
 import Link from "next/link"
+
 const hotelsData = rawHotelsData.map(hotel => ({
 	...hotel,
 	rating: parseFloat(hotel.rating as string)

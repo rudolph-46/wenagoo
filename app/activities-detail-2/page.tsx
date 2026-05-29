@@ -6,6 +6,7 @@ import SwiperGroup3Slider from "@/components/slider/SwiperGroup3Slider";
 import { swiperGroup1 } from "@/util/swiperOption";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 export default function ActivitiesDetail2() {
     const [isAccordion, setIsAccordion] = useState(null);
 

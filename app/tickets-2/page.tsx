@@ -8,6 +8,7 @@ import Layout from "@/components/layout/Layout"
 import SwiperGroupPayment10Slider from '@/components/slider/SwiperGroupPayment10Slider'
 import rawticketsData from "@/util/tickets.json"
 import useTicketFilter from '@/util/useTicketFilter'
+
 const ticketsData = rawticketsData.map(ticket => ({
 	...ticket,
 	rating: parseFloat(ticket.rating as string)

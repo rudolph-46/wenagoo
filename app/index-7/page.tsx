@@ -11,6 +11,7 @@ import Testimonials5 from "@/components/sections/Testimonials5"
 import TopRated3 from "@/components/sections/TopRated3"
 import TopRated43 from "@/components/sections/TopRated43"
 import WhyBookWenago3 from "@/components/sections/WhyBookWenago3"
+
 export default function Home7() {
 
     return (

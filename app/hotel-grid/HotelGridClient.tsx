@@ -4,18 +4,32 @@ import SearchFilterBottom from '@/components/elements/SearchFilterBottom'
 import CanalHotelCard from '@/components/elements/hotelcard/CanalHotelCard'
 import Layout from "@/components/layout/Layout"
 import SwiperGroup8Slider from '@/components/slider/SwiperGroup8Slider'
-import type { CanalHotel, OtaPageContent } from "@/lib/ota"
+import type { CanalHotel, CityCollection, OtaPageContent } from "@/lib/ota"
+import { swiperGroupAnimate } from "@/util/swiperOption"
 import Link from "next/link"
+import { Swiper, SwiperSlide } from "swiper/react"
 
 type Props = {
 	cms: OtaPageContent
 	hotels: CanalHotel[]
+	cityFilter?: string | null
+	cityCollections?: CityCollection[]
 }
 
-export default function HotelGridClient({ cms, hotels }: Props) {
+export default function HotelGridClient({ cms, hotels, cityFilter, cityCollections = [] }: Props) {
 	const heroBg = cms.hero.backgroundImageUrl
 		? { backgroundImage: `url(${cms.hero.backgroundImageUrl})` }
 		: undefined
+
+	const cheapestId =
+		hotels.length > 1
+			? hotels.reduce((min, h) => (h.lowestCanalPrice < min.lowestCanalPrice ? h : min), hotels[0]).hotelId
+			: null
+
+	const heroTitle = cityFilter ? `Hôtels à ${cityFilter}` : cms.hero.title
+	const heroSubtitle = cityFilter
+		? `${hotels.length} hôtel${hotels.length > 1 ? "s" : ""} disponible${hotels.length > 1 ? "s" : ""} dans cette ville.`
+		: cms.hero.subtitle
 
 	return (
 		<Layout headerStyle={1} footerStyle={1}>
@@ -23,131 +37,223 @@ export default function HotelGridClient({ cms, hotels }: Props) {
 				<section className="box-section block-banner-tourlist" style={heroBg}>
 					<div className="container">
 						<div className="text-center">
-							<h3>{cms.hero.title}</h3>
-							<h6 className="heading-6-medium">{cms.hero.subtitle}</h6>
+							<h3>{heroTitle}</h3>
+							<h6 className="heading-6-medium">{heroSubtitle}</h6>
+							{cityFilter && (
+								<div className="mt-15">
+									<Link href="/hotel-grid" className="btn btn-white">
+										← Voir tous les hôtels
+									</Link>
+								</div>
+							)}
 						</div>
 						<div className="box-search-advance box-search-advance-3 background-card wow fadeInUp">
 							<SearchFilterBottom />
 						</div>
 					</div>
 				</section>
-				<section className="box-section box-buttons-hotels background-body">
-					<div className="container">
-						<CagegoryFilter2 />
-					</div>
-				</section>
-				<section className="box-section block-content-hotel background-body">
-					<div className="container">
-						<div className="box-filters mb-25 pb-5 border-bottom border-1 d-flex flex-wrap align-items-center justify-content-between gap-3">
-							<div className="d-flex align-items-center gap-3">
-								<div className="d-flex gap-2">
-									<button type="button" className="btn btn-gray p-2" aria-label="Vue grille">
-										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" stroke="currentColor" strokeWidth="1.5" /><rect x="14" y="3" width="7" height="7" stroke="currentColor" strokeWidth="1.5" /><rect x="3" y="14" width="7" height="7" stroke="currentColor" strokeWidth="1.5" /><rect x="14" y="14" width="7" height="7" stroke="currentColor" strokeWidth="1.5" /></svg>
-									</button>
-									<button type="button" className="btn btn-gray p-2" aria-label="Vue liste">
-										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" strokeWidth="1.5" /><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" strokeWidth="1.5" /><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" strokeWidth="1.5" /><circle cx="4" cy="6" r="1.5" fill="currentColor" /><circle cx="4" cy="12" r="1.5" fill="currentColor" /><circle cx="4" cy="18" r="1.5" fill="currentColor" /></svg>
-									</button>
-								</div>
-								<p className="text-md-medium neutral-500 mb-0">
-									{hotels.length > 0 ? `1 - ${hotels.length} sur ${hotels.length} hôtel${hotels.length > 1 ? 's' : ''} trouvé${hotels.length > 1 ? 's' : ''}` : 'Aucun résultat'}
-								</p>
-							</div>
-							<div className="d-flex align-items-center gap-3">
-								<button type="button" className="btn btn-link text-md-medium neutral-700 p-0">Effacer filtres</button>
-								<label className="d-flex align-items-center gap-2 mb-0">
-									<span className="text-md-medium neutral-500">Afficher</span>
-									<select className="form-select form-select-sm" defaultValue="10" style={{ width: '70px' }}>
-										<option>10</option>
-										<option>20</option>
-										<option>50</option>
-									</select>
-								</label>
-								<label className="d-flex align-items-center gap-2 mb-0">
-									<span className="text-md-medium neutral-500">Trier par</span>
-									<select className="form-select form-select-sm" defaultValue="name" style={{ width: '120px' }}>
-										<option value="name">Nom</option>
-										<option value="price-asc">Prix croissant</option>
-										<option value="price-desc">Prix décroissant</option>
-										<option value="rating">Note</option>
-									</select>
-								</label>
-							</div>
-						</div>
-						<div className="box-content-main-hotel-2">
-							{hotels.length === 0 ? (
-								<div className="text-center py-5">
-									<p className="text-lg neutral-500">Aucun hôtel disponible pour le moment.</p>
-								</div>
-							) : (
-								<div className="box-grid-tours wow fadeIn">
-									<div className="row">
-										{hotels.map((hotel) => (
-											<div className="col-xl-3 col-lg-4 col-md-6 mb-30" key={hotel.hotelId}>
-												<CanalHotelCard hotel={hotel} />
-											</div>
-										))}
+				{(() => {
+					const hasCollections = !!cityFilter && cityCollections.length > 0
+
+					const renderCollection = (col: CityCollection, idx: number) => {
+						const colCheapestId =
+							col.hotels.length > 1
+								? col.hotels.reduce(
+									(min, h) => (h.lowestCanalPrice < min.lowestCanalPrice ? h : min),
+									col.hotels[0],
+								).hotelId
+								: null
+						const navKey = `col-${col.id ?? idx}`
+						const swiperConfig = {
+							...swiperGroupAnimate,
+							slidesPerView: 1.2,
+							spaceBetween: 20,
+							navigation: {
+								nextEl: `.swiper-next-${navKey}`,
+								prevEl: `.swiper-prev-${navKey}`,
+							},
+							breakpoints: {
+								576: { slidesPerView: 2, spaceBetween: 20 },
+								768: { slidesPerView: 2.5, spaceBetween: 20 },
+								992: { slidesPerView: 3, spaceBetween: 24 },
+								1200: { slidesPerView: 4, spaceBetween: 24 },
+							},
+						}
+						return (
+							<section
+								key={col.id ?? idx}
+								className="section-box box-our-featured background-body pt-80"
+							>
+								<div className="container">
+									<div className="row align-items-end">
+										<div className="col-md-8 col-lg-9 mb-30 text-center text-md-start wow fadeInUp">
+											<h2 className="neutral-1000">
+												{col.icon && <span style={{ marginRight: 12 }}>{col.icon}</span>}
+												{col.title}
+											</h2>
+											{col.subtitle && (
+												<p className="text-xl-medium neutral-500 mb-0">{col.subtitle}</p>
+											)}
+										</div>
+										<div className="col-md-4 col-lg-3 mb-30 d-flex align-items-center justify-content-center justify-content-md-end gap-3 wow fadeInUp">
+											<button
+												type="button"
+												className={`swiper-button-prev swiper-button-prev-style-1 swiper-prev-${navKey}`}
+												aria-label="Précédent"
+												style={{ position: 'static', margin: 0 }}
+											>
+												<svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16">
+													<path d="M7.99992 3.33325L3.33325 7.99992M3.33325 7.99992L7.99992 12.6666M3.33325 7.99992H12.6666" strokeLinecap="round" strokeLinejoin="round" />
+												</svg>
+											</button>
+											<button
+												type="button"
+												className={`swiper-button-next swiper-button-next-style-1 swiper-next-${navKey}`}
+												aria-label="Suivant"
+												style={{ position: 'static', margin: 0 }}
+											>
+												<svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16">
+													<path d="M7.99992 12.6666L12.6666 7.99992L7.99992 3.33325M12.6666 7.99992L3.33325 7.99992" strokeLinecap="round" strokeLinejoin="round" />
+												</svg>
+											</button>
+											{cityFilter && (
+												<Link
+													href={`/hotel-grid?city=${encodeURIComponent(cityFilter)}`}
+													className="btn btn-brand-secondary ms-2"
+												>
+													Voir plus
+												</Link>
+											)}
+										</div>
 									</div>
-								</div>
-							)}
-						</div>
-					</div>
-				</section>
-				<section className="section-box box-popular-destinations background-body pb-90">
-					<div className="container">
-						<div className="text-center">
-							<h4 className="neutral-1000 wow fadeInUp">Hotel by Attractions</h4>
-							<p className="text-xl-medium neutral-500 wow fadeInUp">Navigate the Globe with Confidence</p>
-						</div>
-						<div className="box-swiper box-swiper-pd mt-30 wow fadeInDown">
-							<div className="swiper-container swiper-group-8">
-								<SwiperGroup8Slider />
-							</div>
-							<div className="swiper-button-prev swiper-button-prev-style-1 swiper-button-prev-group-8">
-								<svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16">
-									<path d="M7.99992 3.33325L3.33325 7.99992M3.33325 7.99992L7.99992 12.6666M3.33325 7.99992H12.6666" strokeLinecap="round" strokeLinejoin="round" />
-								</svg>
-							</div>
-							<div className="swiper-button-next swiper-button-next-style-1 swiper-button-next-group-8">
-								<svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16">
-									<path d="M7.99992 12.6666L12.6666 7.99992L7.99992 3.33325M12.6666 7.99992L3.33325 7.99992" strokeLinecap="round" strokeLinejoin="round" />
-								</svg>
-							</div>
-						</div>
-					</div>
-				</section>
-				<section className="section-box box-install-app-2 background-body">
-					<div className="container">
-						<div className="block-install-app background-6">
-							<div className="row align-items-center">
-								<div className="col-lg-6">
-									<div className="box-item-download wow fadeInUp">
-										<span className="btn btn-brand-secondary">Install APP   Get  discount code</span>
-										<h5 className="mt-15 mb-30">{cms.promoBanner.title}</h5>
-										{cms.promoBanner.subtitle && (
-											<p className="text-md neutral-500 mb-20">{cms.promoBanner.subtitle}</p>
-										)}
-										<div className="box-button-download">
-											<Link href={cms.promoBanner.playStoreUrl || "#"}>
-												<img src="/assets/imgs/page/homepage6/googleplay.png" alt="Google Play" />
-											</Link>
-											<Link href={cms.promoBanner.appStoreUrl || "#"}>
-												<img src="/assets/imgs/page/homepage6/appstore.png" alt="App Store" />
-											</Link>
+									<div className="box-swiper mt-30">
+										<div className="swiper-container swiper-group-animate swiper-group-journey pb-0">
+											{col.hotels.length === 0 ? (
+												<div className="text-center py-5 px-3">
+													<p className="text-md neutral-500">Aucun hôtel dans cette sélection pour l'instant.</p>
+												</div>
+											) : (
+												<Swiper {...swiperConfig}>
+													{col.hotels.map((h) => (
+														<SwiperSlide key={h.hotelId}>
+															<CanalHotelCard hotel={h} isCheapest={h.hotelId === colCheapestId} />
+														</SwiperSlide>
+													))}
+												</Swiper>
+											)}
 										</div>
 									</div>
 								</div>
-								<div className="col-lg-6">
-									<img
-										className="wow fadeInUp"
-										src={cms.promoBanner.imageUrl ?? "/assets/imgs/page/homepage6/img-download-app.png"}
-										alt="Promo"
-									/>
+							</section>
+						)
+					}
+
+					const howItWorks = (
+						<section id="how-it-works" className="section-box box-why-book-wenago-4 background-body py-90">
+							<div className="container">
+								<div className="row align-items-center">
+									<div className="col-lg-6 mb-30">
+										<span className="btn btn-brand-secondary wow fadeInUp">
+											<span style={{ marginRight: 8 }}>🌍</span>
+											Guide Wenagoo
+										</span>
+										<h2 className="mt-15 mb-15 neutral-1000 wow fadeInUp">Réserver avec Wenagoo, c'est simple.</h2>
+										<p className="text-xl-medium neutral-1000 mb-30 wow fadeInUp">
+											Comparez des hôtels vérifiés, réservez en moins d'une minute et payez en Mobile Money. Notre équipe vous accompagne sur WhatsApp en français, 24h/24.
+										</p>
+										<div className="row">
+											<div className="col-sm-6 mb-15">
+												<span className="text-xl-medium neutral-1000">Paiement : <strong>Mobile Money</strong></span>
+											</div>
+											<div className="col-sm-6 mb-15">
+												<span className="text-xl-medium neutral-1000">Confirmation : <strong>SMS & WhatsApp</strong></span>
+											</div>
+											<div className="col-sm-6 mb-15">
+												<span className="text-xl-medium neutral-1000">Support : <strong>24/7 en français</strong></span>
+											</div>
+											<div className="col-sm-6 mb-15">
+												<span className="text-xl-medium neutral-1000">Devise : <strong>FCFA (XAF)</strong></span>
+											</div>
+										</div>
+									</div>
+									<div className="col-lg-6 mb-30">
+										<div className="row align-items-center">
+											<div className="col-lg-6 col-sm-6">
+												<div className="card-why card-why-2 background-1 wow fadeInUp">
+													<div className="card-image" style={{ fontSize: 36 }}>🔍</div>
+													<div className="card-info">
+														<h6 className="text-xl-bold neutral-1000">Choisissez</h6>
+													</div>
+												</div>
+												<div className="card-why card-why-2 background-3 wow fadeInUp">
+													<div className="card-image" style={{ fontSize: 36 }}>📅</div>
+													<div className="card-info">
+														<h6 className="text-xl-bold neutral-1000">Réservez</h6>
+													</div>
+												</div>
+											</div>
+											<div className="col-lg-6 col-sm-6">
+												<div className="card-why card-why-2 background-2 wow fadeInUp">
+													<div className="card-image" style={{ fontSize: 36 }}>📱</div>
+													<div className="card-info">
+														<h6 className="text-xl-bold neutral-1000">Payez en MoMo</h6>
+													</div>
+												</div>
+												<div className="card-why card-why-2 background-4 wow fadeInUp">
+													<div className="card-image" style={{ fontSize: 36 }}>🏨</div>
+													<div className="card-info">
+														<h6 className="text-xl-bold neutral-1000">Profitez</h6>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</section>
-				<div className="pb-90 background-body" />
+						</section>
+					)
+
+					if (hasCollections) {
+						// Case A: city + collections → 1st collection, then "Comment ça marche", then the rest
+						const [first, ...rest] = cityCollections
+						return (
+							<>
+								{renderCollection(first, 0)}
+								{howItWorks}
+								{rest.map((c, i) => renderCollection(c, i + 1))}
+							</>
+						)
+					}
+
+					// Case B: no city filter (or no collections) → flat list, then Comment ça marche
+					return (
+						<>
+							<section className="box-section block-content-hotel background-body">
+								<div className="container">
+									<div className="box-content-main-hotel-2">
+										{hotels.length === 0 ? (
+											<div className="text-center py-5">
+												<p className="text-lg neutral-500">Aucun hôtel disponible pour le moment.</p>
+											</div>
+										) : (
+											<div className="box-grid-tours wow fadeIn">
+												<div className="row">
+													{hotels.map((hotel) => (
+														<div className="col-xl-3 col-lg-4 col-md-6 mb-30" key={hotel.hotelId}>
+															<CanalHotelCard hotel={hotel} isCheapest={hotel.hotelId === cheapestId} />
+														</div>
+													))}
+												</div>
+											</div>
+										)}
+									</div>
+								</div>
+							</section>
+							{howItWorks}
+						</>
+					)
+				})()}
+
 			</main>
 		</Layout>
 	)

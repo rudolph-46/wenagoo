@@ -1,7 +1,8 @@
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "@/public/assets/css/style.css";
 import { NavProvider } from "@/lib/nav-context";
-import { listNavProducts } from "@/lib/ota";
+import { getOtaPage, listNavProducts } from "@/lib/ota";
+import { SiteProvider } from "@/lib/site-context";
 import type { Metadata } from "next";
 import { Manrope, Merienda } from "next/font/google";
 
@@ -23,19 +24,30 @@ export const metadata: Metadata = {
     description: "Multipurpose Travel Booking Next.js Template",
 };
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const navItems = await listNavProducts();
+    const [navItems, siteCms] = await Promise.all([
+        listNavProducts(),
+        getOtaPage("hotel-grid").catch(() => null),
+    ]);
+
+    const siteContent = {
+        topBanner: siteCms?.topBanner ?? null,
+        footer: siteCms?.footer ?? null,
+        paymentMethods: siteCms?.paymentMethods ?? [],
+    };
 
     return (
-        <html lang="en" className={`${manrope_init.variable} ${merienda_init.variable}`}>
+        <html lang="fr" className={`${manrope_init.variable} ${merienda_init.variable}`}>
             <body>
-                <NavProvider items={navItems}>{children}</NavProvider>
+                <NavProvider items={navItems}>
+                    <SiteProvider value={siteContent}>{children}</SiteProvider>
+                </NavProvider>
             </body>
         </html>
     );

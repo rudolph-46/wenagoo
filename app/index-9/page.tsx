@@ -9,6 +9,7 @@ import News7 from "@/components/sections/News7"
 import PropertiesArea from "@/components/sections/PropertiesArea"
 import Subscriber3 from "@/components/sections/Subscriber3"
 import WhyChooseUs2 from "@/components/sections/WhyChooseUs2"
+
 export default function Home9() {
 
     return (

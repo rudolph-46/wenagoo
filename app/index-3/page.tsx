@@ -11,6 +11,7 @@ import PopularDestinations3 from "@/components/sections/PopularDestinations3"
 import RecommendedForYou from "@/components/sections/RecommendedForYou"
 import Section6Home3 from "@/components/sections/Section6Home3"
 import VideoGallery from "@/components/sections/VideoGallery"
+
 export default function Home3() {
 
     return (

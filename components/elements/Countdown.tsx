@@ -16,23 +16,16 @@ const getPartsofTimeDuration = (duration: any) => {
 }
 
 const Countdown = (endDateTime: any) => {
-	const [time, setTime] = useState(new Date().toLocaleTimeString())
+	const [now, setNow] = useState<number | null>(null)
 
 	useEffect(() => {
-		const timeout = setTimeout(() => {
-			const date = new Date()
-			setTime(date.toLocaleTimeString())
-		}, 1000)
-		return () => {
-			clearTimeout(timeout)
-		}
-	}, [time])
+		setNow(Date.now())
+		const interval = setInterval(() => setNow(Date.now()), 1000)
+		return () => clearInterval(interval)
+	}, [])
 
-	const now = Date.now() // Number of milliseconds from begining of time
-
-	const future = new Date(endDateTime.endDateTime) // The day we leave for Japan
-
-	const timeDif = future.getTime() - now
+	const future = new Date(endDateTime.endDateTime)
+	const timeDif = now !== null ? future.getTime() - now : 0
 	const timeParts = getPartsofTimeDuration(timeDif)
 
 	// const countDownTime = `${timeParts.days} Days ${timeParts.hours} Hours and ${timeParts.minutes} minutes and ${timeParts.seconds} seconds`;
