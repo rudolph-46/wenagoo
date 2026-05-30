@@ -20,7 +20,6 @@ type Props = {
 	citySlug?: string | null
 }
 
-const DESTINATION_FALLBACK = '/assets/imgs/page/homepage1/popular.png'
 const HERO_FALLBACK = '/assets/imgs/page/destination/banner2.png'
 
 export default function HotelsClient({ cms, hotels, cityFilter, cityCollections = [], cities = [], citySlug = null }: Props) {
@@ -206,12 +205,12 @@ export default function HotelsClient({ cms, hotels, cityFilter, cityCollections 
 				</div>
 				<div className="box-list-populars">
 					<div className="row">
-						{cms.destinations.map((d, i) => (
+						{cms.destinations.filter((d) => !!d.imageUrl).map((d, i) => (
 							<div className="col-lg-3 col-sm-6" key={i}>
 								<div className="card-popular background-card hover-up">
 									<div className="card-image">
 										<Link href={d.href || '/hotels'}>
-											<img src={d.imageUrl || DESTINATION_FALLBACK} alt={d.label} />
+											<img src={d.imageUrl!} alt={d.label} />
 										</Link>
 									</div>
 									<div className="card-info">
